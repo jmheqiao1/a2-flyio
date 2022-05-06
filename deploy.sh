@@ -12,12 +12,12 @@ if [ -z "${APP_NAME}" ]; then
 fi
 
 flyctl info --app "${APP_NAME}" >/tmp/${APP_NAME} 2>&1;
-if [ "$(cat /tmp/${APP_NAME} | grep -o "Could not resolve App")" = "Could not resolve App" ]; then
+if [ "$(cat /tmp/${APP_NAME} | grep -o "Could not resolve")" = "Could not resolve" ]; then
     printf '\e[33m进度2/5：创建应用\n\e[0m'
     flyctl apps create "${APP_NAME}" >/dev/null 2>&1;
 
     flyctl info --app "${APP_NAME}" >/tmp/${APP_NAME} 2>&1;
-    if [ "$(cat /tmp/${APP_NAME} | grep -o "Could not resolve App")" != "Could not resolve App" ]; then
+    if [ "$(cat /tmp/${APP_NAME} | grep -o "Could not resolve")" != "Could not resolve" ]; then
         printf '\e[32m创建应用成功\n\e[0m'
     else
         printf '\e[31m错误：创建应用失败\n\e[0m' && exit 1
