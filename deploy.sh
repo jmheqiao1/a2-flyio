@@ -12,12 +12,12 @@ if [ -z "${APP_NAME}" ]; then
 fi
 
 flyctl info --app "${APP_NAME}" >/tmp/${APP_NAME} 2>&1;
-if [ "$(cat /tmp/${APP_NAME} | grep -o "Could not resolve")" = "Could not resolve" ]; then
+if [ "$(cat /tmp/${APP_NAME} | grep -o "Could not resolve App")" = "Could not resolve App" ]; then
     printf '\e[33m进度2/5：创建应用\n\e[0m'
     flyctl apps create "${APP_NAME}" >/dev/null 2>&1;
 
     flyctl info --app "${APP_NAME}" >/tmp/${APP_NAME} 2>&1;
-    if [ "$(cat /tmp/${APP_NAME} | grep -o "Could not resolve")" != "Could not resolve" ]; then
+    if [ "$(cat /tmp/${APP_NAME} | grep -o "Could not resolve App")" != "Could not resolve App" ]; then
         printf '\e[32m创建应用成功\n\e[0m'
     else
         printf '\e[31m错误：创建应用失败\n\e[0m' && exit 1
@@ -36,9 +36,12 @@ processes = []
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
+[[mounts]]
+  destination = "/ql/data"
+  source = "data"
 [[services]]
   http_checks = []
-  internal_port = 2233
+  internal_port = 5700
   # processes = ["app"]
   protocol = "tcp"
   script_checks = []
@@ -60,14 +63,8 @@ processes = []
 EOF
 printf '\e[32m成功创建配置\n\e[0m'
 printf '\e[33m进度4/5：创建环境变量及部署区域\n\e[0m'
+printf '\e[33m进度4/5：略.......\n\e[0m'
 
-flyctl secrets set DATABASE="${DATABASE}"
-flyctl secrets set SQLUSER="${SQLUSER}"
-flyctl secrets set SQLPASSWORD="${SQLPASSWORD}"
-flyctl secrets set SQLHOST="${SQLHOST}"
-flyctl secrets set SQLPORT="${SQLPORT}"
-flyctl secrets set SQLNAME="${SQLNAME}"
-flyctl regions set ${REGION}
 printf '\e[32m进度5/5：部署\n\e[0m'
 flyctl deploy --detach
-# flyctl status --app ${APP_NAME}
+#flyctl status --app ${APP_NAME}
