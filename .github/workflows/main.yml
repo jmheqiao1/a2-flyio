@@ -2,16 +2,11 @@ name: Fly Deploy cd
 on: 
   push:
   schedule:
-    - cron: '0 8 3 * *'
+    - cron: '0 8 18 * *'  # 每月十八号八点（UTC）自动部署
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   APP_NAME: ${{ secrets.APP_NAME }}
-  SQLUSER: ${{ secrets.SQLUSER }}
-  DATABASE: ${{ secrets.DATABASE }}
-  SQLPASSWORD: ${{ secrets.SQLPASSWORD }}
-  SQLHOST: ${{ secrets.SQLHOST }}
-  SQLPORT: ${{ secrets.SQLPORT }}
-  SQLNAME: ${{ secrets.SQLNAME }}
+
 jobs:
   deploy:
     name: Deploy app
@@ -20,6 +15,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Deploy
-        run: |
-          sh ./deploy.sh
-
+        run: | 
+           sh ./deploy.sh
